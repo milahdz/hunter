@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taller Hunter - Sistema de Gestión</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <i class="fas fa-tools logo-icon"></i>
+                <h1>Taller Hunter</h1>
+            </div>
+            
+            <nav class="nav">
+                <a href="#" class="nav-item active" data-page="agenda">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Agenda</span>
+                </a>
+                <a href="#" class="nav-item" data-page="vehiculos">
+                    <i class="fas fa-car"></i>
+                    <span>Vehículos</span>
+                </a>
+                <a href="#" class="nav-item" data-page="clientes">
+                    <i class="fas fa-users"></i>
+                    <span>Clientes</span>
+                </a>
+                <a href="#" class="nav-item" data-page="servicios">
+                    <i class="fas fa-cogs"></i>
+                    <span>Servicios</span>
+                </a>
+                <a href="#" class="nav-item" data-page="reportes">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Reportes</span>
+                </a>
+                <a href="#" class="nav-item" data-page="configuracion">
+                    <i class="fas fa-cog"></i>
+                    <span>Configuración</span>
+                </a>
+            </nav>
+            
+            <div class="footer">
+                <p>© 2026 Taller Hunter - Sistema de Gestión Mecánica</p>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <div class="header">
+                <h2>Sistema de Gestión de Agenda</h2>
+                <button class="btn btn-primary" id="addVehicleBtn">
+                    <i class="fas fa-plus"></i>
+                    Agendar Vehículo
+                </button>
+            </div>
+            
+            <!-- Stats -->
+            <div class="stats-container">
+                <div class="stat-card stat-total">
+                    <h3>Total</h3>
+                    <div class="stat-value" id="totalCount">1</div>
+                </div>
+                <div class="stat-card stat-pendientes">
+                    <h3>Pendientes</h3>
+                    <div class="stat-value" id="pendingCount">0</div>
+                </div>
+                <div class="stat-card stat-proceso">
+                    <h3>En Proceso</h3>
+                    <div class="stat-value" id="processCount">0</div>
+                </div>
+                <div class="stat-card stat-completados">
+                    <h3>Completados</h3>
+                    <div class="stat-value" id="completedCount">1</div>
+                </div>
+            </div>
+            
+            <!-- Tabs -->
+            <div class="tabs">
+                <div class="tab active" data-tab="all">Todos</div>
+                <div class="tab" data-tab="pending">Pendientes</div>
+                <div class="tab" data-tab="process">En Proceso</div>
+                <div class="tab" data-tab="completed">Completados</div>
+            </div>
+            
+            <!-- List/Calendar View -->
+            <div class="content-area">
+                <div class="content-header">
+                    <h3 id="viewTitle">Lista de Servicios</h3>
+                    <div class="view-options">
+                        <button class="view-btn active" data-view="list">Lista</button>
+                        <button class="view-btn" data-view="week">Semana</button>
+                        <button class="view-btn" data-view="calendar">Calendario</button>
+                    </div>
+                </div>
+                
+                <!-- List View -->
+                <div id="listView" class="view-content">
+                    <!-- Los servicios se renderizarán dinámicamente -->
+                </div>
+                
+                <!-- Week View -->
+                <div id="weekView" class="view-content" style="display: none;">
+                    <div class="calendar-container">
+                        <!-- Los días se generarán con JavaScript -->
+                    </div>
+                </div>
+                
+                <!-- Calendar View -->
+                <div id="calendarView" class="view-content" style="display: none;">
+                    <div class="calendar-container">
+                        <!-- Los días se generarán con JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Modal para agendar nuevo vehículo -->
+    <div class="modal" id="scheduleModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Agendar Nuevo Vehículo</h3>
+                <button class="close-modal" id="closeModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="scheduleForm">
+                    <div class="form-group">
+                        <label for="plate" class="required">Placa</label>
+                        <input type="text" id="plate" class="form-control" placeholder="ABC-1234" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="owner" class="required">Propietario</label>
+                        <input type="text" id="owner" class="form-control" placeholder="Nombre completo" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="model">Modelo</label>
+                        <input type="text" id="model" class="form-control" placeholder="Toyota Corolla 2020">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Teléfono</label>
+                        <input type="tel" id="phone" class="form-control" placeholder="+1234567890">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="service" class="required">Tipo de Servicio</label>
+                        <select id="service" class="form-select" required>
+                            <option value="">Seleccionar servicio</option>
+                            <option value="Alineación y Balanceo">Alineación y Balanceo</option>
+                            <option value="Cambio de Aceite">Cambio de Aceite</option>
+                            <option value="Revisión de Frenos">Revisión de Frenos</option>
+                            <option value="Suspensión">Suspensión</option>
+                            <option value="Sistema Eléctrico">Sistema Eléctrico</option>
+                            <option value="Revisión General">Revisión General</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="employee" class="required">Empleado</label>
+                        <select id="employee" class="form-select" required>
+                            <option value="">Seleccionar empleado</option>
+                            <option value="Juan Pérez">Juan Pérez</option>
+                            <option value="María García">María García</option>
+                            <option value="Carlos López">Carlos López</option>
+                            <option value="Ana Rodríguez">Ana Rodríguez</option>
+                            <option value="Pedro Martínez">Pedro Martínez</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="date" class="required">Fecha</label>
+                        <input type="date" id="date" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="time">Hora</label>
+                        <div class="time-input-group">
+                            <input type="time" id="time" class="form-control" value="08:30">
+                            <div class="time-format">a.m.</div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="notes">Notas Adicionales</label>
+                        <textarea id="notes" class="form-control" rows="3" placeholder="Detalles del problema o requerimientos especiales..."></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="cancelBtn">Cancelar</button>
+                <button class="btn btn-primary" id="saveBtn">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
